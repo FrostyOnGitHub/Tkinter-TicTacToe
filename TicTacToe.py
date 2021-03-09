@@ -1,10 +1,11 @@
 from tkinter import *
 import tkinter.messagebox
+#Set up the window
 tk=Tk()
 tk.geometry('415x515')
 tk.title("Jeu de Tic-Tac-Toe")
 
-#on met en place le Canvas
+#Create the Canvas area for the game
 
 Canvas=Canvas(tk, bg="white", width=415, height=415)
 Canvas.place(x=0,y=100)
@@ -13,7 +14,7 @@ line = Canvas.create_line(0,138,415,138)
 line = Canvas.create_line(0,2*138,415,2*138)
 line = Canvas.create_line(2*138,0,2*138,415)
 
-#On crée les joueurs et on initialise les autres variables importantes
+#Create the players and initialize the other variables
 
 joueur1=StringVar()
 joueur2=StringVar()
@@ -22,7 +23,7 @@ total_mouv=0
 Champion = False
 
 
-#On demande le nom des joueurs
+#Asking for the name fo the players
 j1_nom = Entry(tk, textvariable=joueur1, bd=4)
 j1_nom.grid(row=1, column=1,)
 j2_nom = Entry(tk, textvariable=joueur2, bd=4)
@@ -30,14 +31,15 @@ j2_nom.grid(row=2, column=1,)
 
 
     
-#on crée le tableau de tableau auquel on assigne un 0 partout (pour l'ordinateur 0= case vide)
+#We create a table and append 0 to all of the squares( for the machine 0 is = to an empty square)
 board=[]
 for i in range(3):
     board.append([])
     for j in range(3):
         board[i].append(0)
         
-#fonctions qui retournent le nom du champion dans la fonction gagnant()        
+#I have made use of dictionnaries and tuples here since I wanted to challenge myself to find a way to make it work(i know it is not the best way to create this system)
+#these two functions control the name being returned when either a cross or a circle win.
 def croix_gagnante():
     gagnant1=joueur1.get() 
     gagnant2= joueur2.get()
@@ -54,16 +56,16 @@ def cercle_gagnant():
     return mon_tuple[1]
 
 
-#on dessine une croix    
+#This function draws two lines in the designated square on the Canvas.
 def croix(i,j):
     line2 = Canvas.create_line(i*138,j*138,(i+1)*138,(j+1)*138,width=2,fill="purple",tag="croix")
     line3 = Canvas.create_line(i*138,j*138,(i)*138,(j+1)*138,(i+1)*138,j*138,width=2,fill="purple",tag="croix")
 
-#on dessine un oval (cercle)
+#This function draws an oval, although our dimensions allow it to resemble a circle.
 def cercle(i,j):
     circle = Canvas.create_oval(i*138,j*138,(i+1)*138,(j+1)*138,width=2,fill="orange",tag="cercle")
     
-#le system qui determine si une croix va etre placée ou si c'est un cercle qui va etre placé
+#This functions checks if the square on the Canvas has the value 1, if it does it executes the croix() function, and if it has the value 2, it executes the cercle() function.
 def afficher():
     for i in range(3):
         for j in range(3):
@@ -73,10 +75,8 @@ def afficher():
                 cercle(i,j)
     Canvas.update()
                 
-#Fonction principale du code: verification de la case avec la position de la souris, compteur de mouvements pour une possible égalité, determination si la case est deja utilisée, ainsi qu'un system de determination si c'est X ou O qui joue prochainement.
-#C'est aussi dans cette fonction que les fonctions afficher() et gagnant() entre en jeu.
-    
-#la commande "global" a la ligne 79 permet de rendre les variables h,total_mouv et champion que l'on a initialiser au debut globales, ce qui nous permet de travailler avec dans cette fonction.
+#This is the main function of the code: It checks which square of the Canvas the mouse pointer clicked in, counts how many moves were executed and checks for a tie, determines if the square of the Canvas was already clicked. It also features a system that checks if it is X or O that plays next.
+#If you aren't familiar to the global method, it simply allows you to use externally created variables in the function.
 def main(event):
     global h,total_mouv,Champion
     mx = event.x
@@ -114,11 +114,7 @@ def main(event):
              
                     
 
-
-#system de verification pour un gagnant(on fait deux test separes pour voir si c'est les croix qui sont consecutives (dans ce cas les cases sont = a 1), ou si c'est les cercles qui gagnent(dans ce cas les cases sont egales a 2).
-#on verifie egalement si les cases testes sont differentes de 0 ( 0 = case vide)
-                         
-#on utilise break aux lignes 134 et 142 car pour verifier les diagonales, puisque je n'ai pas utilise i, le test s'effectue trois fois, donc le message s'affiche trois fois si il y a un gagnant en diagonale.
+#verification system that checks for a winner( we do two seperate tests to see if it is the crosses or the circles that are consecutive). We also check if the cells are different from 0(Here again, for the machine, 0 counts as empty, and 3 consecutive empty cells would be considered winning without the test)                        
 def gagnant():
     global Champion
     for i in range(3):
@@ -143,7 +139,7 @@ def gagnant():
 Canvas.bind("<Button 1>",main)
   
   
-#fonction mise en place lorsque le boutton recommencer est appuyé: on efface tout du Canvas et on attribut la valeur 0 a toute les cases(0=case vide)  
+#simple function that is executed when you press the restart button (the buttons is labeled as "recommencer", since I initially wrote this code in french)
 def recommencer():
     global h,total_mouv,Champion
     
@@ -157,7 +153,7 @@ def recommencer():
             board[j][i] = 0
    
 
-#les differents Label et le Boutton, qui quand il est appuyé, effectue la fonction recommencer()     
+#Here we set up the labels for the player names.   
 joueurs = Label( tk, text=" Joueur1(X)", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
 joueurs.grid(row=1, column=0)
 
@@ -165,11 +161,16 @@ joueurs.grid(row=1, column=0)
 joueurs = Label( tk, text=" Joueur2(O)", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
 joueurs.grid(row=2, column=0)
 
+
+#The button for the restart (recommencer()) function
 button1 = Button(tk, text="recommencer", font='Times 10 bold', bg='black', fg='white', height=1, width=10, command=recommencer)
 button1.grid(row=2, column=2)
 
+
+#If you work with a Canvas, never forget to Canvas.update() :)
 Canvas.update()
 
 tk.mainloop()
 
+#You can ask me anything about this code on discord : FrostyCitrus#3699
 
