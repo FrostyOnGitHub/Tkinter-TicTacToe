@@ -43,7 +43,7 @@ for i in range(3):
 def croix_gagnante():
     gagnant1=joueur1.get() 
     gagnant2= joueur2.get()
-    dico_gagnant = {"j1": gagnant1 + " Gagne!","j2": gagnant2 + " Gagne!"}
+    dico_gagnant = {"j1": gagnant1 + " Wins!","j2": gagnant2 + " Wins!"}
     mon_tuple=(dico_gagnant["j1"],dico_gagnant["j2"])
     return mon_tuple[0]
 
@@ -51,7 +51,7 @@ def croix_gagnante():
 def cercle_gagnant():
     gagnant1=joueur1.get() 
     gagnant2= joueur2.get()
-    dico_gagnant = {"j1": gagnant1 + " Gagne!","j2": gagnant2 + " Gagne!"}
+    dico_gagnant = {"j1": gagnant1 + " Wins!","j2": gagnant2 + " Wins!"}
     mon_tuple=(dico_gagnant["j1"],dico_gagnant["j2"])
     return mon_tuple[1]
 
